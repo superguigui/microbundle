@@ -401,6 +401,8 @@ function createConfig(options, entry, format, writeMeta) {
 	const absMain = resolve(options.cwd, getMain({ options, entry, format }));
 	const outputDir = dirname(absMain);
 	const outputEntryFileName = basename(absMain);
+	const inject =
+		options['css-inject'] === true || options['css-inject'] === 'true';
 
 	let config = {
 		/** @type {import('rollup').InputOptions} */
@@ -454,10 +456,8 @@ function createConfig(options, entry, format, writeMeta) {
 						autoModules: shouldCssModules(options),
 						modules: cssModulesConfig(options),
 						// only write out CSS for the first bundle (avoids pointless extra files):
-						inject:
-							options['css-inject'] === true ||
-							options['css-inject'] === 'true',
-						extract: !!writeMeta,
+						inject,
+						extract: !!writeMeta && !inject,
 					}),
 					moduleAliases.length > 0 &&
 						alias({
