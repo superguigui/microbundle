@@ -402,7 +402,9 @@ function createConfig(options, entry, format, writeMeta) {
 	const outputDir = dirname(absMain);
 	const outputEntryFileName = basename(absMain);
 	const inject =
-		options['css-inject'] === true || options['css-inject'] === 'true';
+		options['css-inject'] === 'top'
+			? { insertAt: 'top' }
+			: options['css-inject'] === true || options['css-inject'] === 'true';
 
 	let config = {
 		/** @type {import('rollup').InputOptions} */
